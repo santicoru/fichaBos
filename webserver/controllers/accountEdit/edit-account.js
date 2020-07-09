@@ -3,6 +3,7 @@
 const bcrypt = require('bcrypt');
 const Joi = require('@hapi/joi');
 const mysqlPool = require('../../../database/mysql-pool');
+//const bodyParser = require("body-parser");
 
 async function validateSchema(payload) {
   const schema = Joi.object({

@@ -3,6 +3,7 @@
 const bcrypt = require('bcrypt');
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
+//const bodyParser = require("body-parser");
 const sendgridMail = require('@sendgrid/mail');
 const mysqlPool = require('../../../database/mysql-pool');
 

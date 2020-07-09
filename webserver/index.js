@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const routes = require('./routes');
+const routes = require('routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,7 +13,7 @@ app.use(cors());
 
 /*
 app.use("/api/account", routes.account);
-app.use('/api/acModif', routes.accountModif)
+app.use('/api/acModif', routes.accountModif);
 app.use("/api/auth", routes.auth);
 app.use("/api/product", routes.product);
 app.use("/api/catalogue", routes.catalogue);

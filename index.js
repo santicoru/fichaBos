@@ -4,13 +4,13 @@ require('dotenv').config();
 const webServer = require('./webserver');
 const mysqlPool = require('./database/mysql-pool');
 
-const httpListenigPort = process.env.PORT;
+const httpListeningPort = process.env.PORT || 8080;
 
 async function initApp() {
   try {
     await mysqlPool.connect();
-    await webServer.listen(httpListenigPort);
-    console.log(`server running at ${httpListenigPort}`);
+    await webServer.listen(httpListeningPort);
+    console.log(`server running at ${httpListeningPort}`);
   } catch (e) {
     console.error(e);
     process.exit(-1);
