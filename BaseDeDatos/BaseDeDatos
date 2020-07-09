@@ -1,8 +1,6 @@
 create table userBos (
 userId int auto_increment,
 userName varchar(15),
-userSurname varchar(30),
-userDNI int,
 userEmail varchar(30),
 userPassword varchar(50),
 registerDate date,
@@ -16,49 +14,19 @@ primary key (adminId),
 foreign key (userId) references UserBos(userId)
 );
 
-create table HRTechnician (
-technicianId int auto_increment,
-userId int,
-adminId int,
-primary key (technicianId),
-foreign key (userId) references UserBos(userId),
-foreign key (adminId) references Administrator(adminId)
-);
-
-create table worker (
-workerId int auto_increment,
-userId int,
-adminId int,
-technicianId int,
-primary key (workerId),
-foreign key (userId) references UserBos(userId),
-foreign key (adminId) references Administrator(adminId),
-foreign key (technicianId) references HRTechnician(technicianId)
-);
-
 create table workSheet (
 workSheetId int auto_increment,
-project varchar(50),
-workerId int,
+project varchar(256),
+userId int,
+timeIn datetime,
+timeOut datetime,
 primary key(workSheetId),
-foreign key (workerId) references Worker(workerId)
+foreign key (userId) references userBos(userId)
 );
 
 create table workSheetHistorical (
 workSheetHistoricalId int auto_increment,
 workSheetId int,
-technicianId int,
 primary key (workSheetHistoricalId),
-foreign key (workSheetId) references workSheet(workSheetId),
-foreign key (technicianId) references HRTechnician(technicianId)
-);
-
-create table workPlace (
-workPlaceId int auto_increment,
-workPlaceName varchar(25),
-workPlaceEnterprise varchar(25),
-workPlaceCampus varchar(25),
-workSheetId int,
-primary key (workPlaceId),
 foreign key (workSheetId) references workSheet(workSheetId)
-)
+);
