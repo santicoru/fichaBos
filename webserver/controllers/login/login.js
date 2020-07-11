@@ -8,7 +8,7 @@ const mysqlPool = require('../../../database/mysql-pool');
 async function validateSchema(payload) {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{8,30}$/).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{1,30}$/).required(),
   });
   Joi.assert(payload, schema);
 }
@@ -16,11 +16,11 @@ async function validateSchema(payload) {
 async function login(req, res, next) {
   const authData = { ...req.body };
   console.log(authData);
-  // try {
-  //   await validateSchema(authData);
-  // } catch (e) {
-  //   return res.status(400).send(e);
-  // }
+  try {
+    await validateSchema(authData);
+  } catch (e) {
+    return res.status(402).send(e);
+  }
 
   try {
     const sqlQuery = `SELECT userId, userEmail, userPassword
@@ -37,7 +37,7 @@ async function login(req, res, next) {
     }
 
     const userData = result[0];
-    const isPasswordOk = await bcrypt.compare(authData.password, userData.password);
+    const isPasswordOk = await bcrypt.compare(authData.password, userData.userPassword);
 
     if (!isPasswordOk) {
       return res.status(401).send();

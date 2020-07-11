@@ -15,7 +15,7 @@ async function initApp() {
     console.log(`Server running at ${httpListeningPort}`);
   } catch (e) {
     console.error(e);
-    process.exit(-1);
+    process.exit(1);
   }
 }
 
