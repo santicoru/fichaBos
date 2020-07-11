@@ -16,11 +16,11 @@ async function validateSchema(payload) {
 async function login(req, res, next) {
   const authData = { ...req.body };
   console.log(authData);
-  try {
-    await validateSchema(authData);
-  } catch (e) {
-    return res.status(400).send(e);
-  }
+  // try {
+  //   await validateSchema(authData);
+  // } catch (e) {
+  //   return res.status(400).send(e);
+  // }
 
   try {
     const sqlQuery = `SELECT userId, userEmail, userPassword

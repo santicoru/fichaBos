@@ -5,12 +5,18 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('routes');
 
+
 const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
 
-app.use(cors());
-
+// app.use(cors());
+app.use(function(req, res, next) {
+      res.header('Access-Control.Allow.Origin', '*');
+      res.header('Access-Control.Allow.Methods', 'GET,PUT,POST,DELETE');
+      res.header('Access-Control.Allow.Headers', 'Cotent-Type');
+    }
+)
 /*
 app.use("/api/account", routes.account);
 app.use('/api/acModif', routes.accountModif);
@@ -45,7 +51,11 @@ async function close() {
   } else {
     console.error("Can not close a non started server");
   }
+
+  
 }
+
+
 
 module.exports = {
   listen,
