@@ -8,7 +8,7 @@ const {
 } = require('../controllers/accountEdit');
 const {
     checkAccountSession,
-} = require('../controllers/account/index');
+} = require('../controllers/account/check-account-session');
 
 router.delete('/', checkAccountSession, deleteAccountController);
 router.put('/', checkAccountSession, editAccountController);

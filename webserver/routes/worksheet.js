@@ -8,9 +8,9 @@ const {
 } = require('../controllers/workSheet');
 const {
     checkAccountSession,
-} = require('../controllers/account/index');
+} = require('../controllers/account/check-account-session');
 
 router.post('/', checkAccountSession, createRegister);
-router.get('/', checkAccountSession, readEntries);
+
 
 module.exports = router;
