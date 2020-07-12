@@ -16,7 +16,7 @@ async function validateSchema(payload) {
     name: Joi.string(),
     surname: Joi.string().allow(null),
     email: Joi.string().email().required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{8,30}$/).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{1,30}$/).required(),
   });
   Joi.assert(payload, schema);
 }
@@ -43,41 +43,18 @@ async function adminCreateAccount(req, res, next) {
   try {
     const connection = await mysqlPool.getConnection();
     const sqlInsercion = 'INSERT INTO administrator SET ?';
-
     await connection.query(sqlInsercion, {
-      userId: accountData.userId,
-      /*
-      phone: accountData.phone,
-      birth_date: accountData.birth_date,
-      document_type: accountData.document_type,
-      */
+      userName: accountData.name,
+      userEmail: accountData.email,
+      userPassword: securePassword,
+      registerDate: createdAt,
     });
-
-    // Comprobar que es userEmail y no email a secas
-    const [id] = await connection.query(`SELECT userId FROM administrator WHERE userId='${accountData.userId}'`);
-    const userId = id[0].id;
-
     connection.release();
-
-    const payloadJwt = {
-      userId: userId,
-      //role: accountData.user_type,
-    };
-
-    const jwtExpiresIn = parseInt(process.env.AUTH_ACCESS_TOKEN_TTL);
-    const token = jwt.sign(payloadJwt, process.env.AUTH_JWT_SECRET, {
-      expiresIn: jwtExpiresIn,
-    });
-
-    const response = {
-      token,
-      expiresIn: jwtExpiresIn,
-    };
-
-
+    return res.status(200).send();
+    
   } catch (e) {
     console.error(e);
-    return res.status(500).send('Unable to register');
+    return res.status(500).send(e.message);
   }
 
 }

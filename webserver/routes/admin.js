@@ -10,6 +10,6 @@ const accountController = require('../controllers/account/index');
 
 router.post('/', adminCreateAccount);
 
-router.get('/', accountController.checkAccountSession, readEntries);
+router.get('/',  readEntries);
 
 module.exports = router;

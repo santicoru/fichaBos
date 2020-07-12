@@ -8,7 +8,6 @@ const httpServerDomain = process.env.HTTP_SERVER_DOMAIN;
 
 async function validateSchema(payload) {
   const schema = Joi.object({
-    userId: Joi.string().required(),
     workplace: Joi.string().required(),
     // .guid({
     //   version: ['uuidv4'],
@@ -18,8 +17,6 @@ async function validateSchema(payload) {
     timeOut: Joi.string().required(),
     token: Joi.string().required(),
     observations:  Joi.string()
-
-
   });
 
   Joi.assert(payload, schema);
@@ -34,9 +31,8 @@ async function createRegister(req, res, next) {
   try {
     await validateSchema(noteData);
     const { userId } = jwt.verify(req.headers.bearer, "Fichamelavida");
- 
+  console.log(userId,"userId")
     //const noteId = uuidV4();
-    const now = new Date().toISOString().substring(0, 19).replace('T', ' ');
     const sqlCreateNote = 'INSERT INTO workSheet SET ?';
 
     const connection = await mysqlPool.getConnection();
@@ -47,7 +43,7 @@ async function createRegister(req, res, next) {
       */
     workPlace : noteData.workplace,
     userId: userId,
-    workDate: now,
+    workDate: noteData.workDate,
     timeIn: noteData.timeIn,
     timeOut: noteData.timeOut,
     WorksheetState: noteData.WorksheetState,

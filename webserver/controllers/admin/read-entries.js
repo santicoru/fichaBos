@@ -2,11 +2,15 @@
 
 //const { readEntries } = require("../workSheet");
 
+const mysqlPool = require('../../../database/mysql-pool');
+
 async function readEntries(req, res, next) {
   try {
+    const workSheetState = req.body.worksheetState;
     const connection = await mysqlPool.getConnection();
     let sqlShow = null;
-    switch (params.worksheetState) {
+    // workSheetState = workSheetState || 1
+    switch (workSheetState) {
       case 1:
         sqlShow =
           "SELECT * FROM worksheet WHERE worksheetState = 1 ORDER BY workDate";

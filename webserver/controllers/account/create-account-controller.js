@@ -58,7 +58,7 @@ async function createAccount(req, res, next) {
       registerDate: createdAt,
     });
     connection.release();
-
+    return res.status(200).send();
     
   } catch (e) {
     console.error(e);
