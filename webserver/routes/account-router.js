@@ -2,11 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const {
-  createAccountController,
-  checkAccountSession,
-} = require('../controllers/account/index');
+const accountController = require('../controllers/account/index');
 
-router.post('/', createAccountController);
+router.post('/', accountController.createAccountController);
 
 module.exports = router;

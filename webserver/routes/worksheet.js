@@ -2,13 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const {
-    createRegister,
-    readEntries
-} = require('../controllers/workSheet');
-const {
-    checkAccountSession,
-} = require('../controllers/account/check-account-session');
+const createRegister = require('../controllers/workSheet/create-register');
+const checkAccountSession = require('../controllers/account/check-account-session');
 
 router.post('/', checkAccountSession, createRegister);
 

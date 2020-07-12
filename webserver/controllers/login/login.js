@@ -45,7 +45,7 @@ async function login(req, res, next) {
 
     const payloadJwt = {
       userId: userData.id,
-      //role: userData.user_type,
+      //role: admin,
     };
 
     const jwtExpiresIn = parseInt(process.env.AUTH_ACCESS_TOKEN_TTL);
@@ -54,7 +54,7 @@ async function login(req, res, next) {
     });
 
     const response = {
-      token,
+      accessToken : token,
       expiresIn: jwtExpiresIn,
     };
 
