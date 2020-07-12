@@ -3,21 +3,23 @@
 const Joi = require('@hapi/joi');
 //const uuidV4 = require('uuid/v4');
 const mysqlPool = require('../../../database/mysql-pool');
-
+const jwt = require('jsonwebtoken');
 const httpServerDomain = process.env.HTTP_SERVER_DOMAIN;
 
 async function validateSchema(payload) {
   const schema = Joi.object({
-    workSheetId: Joi.string(),
-    project: Joi.string(),
-    userId: Joi.string(),
+    userId: Joi.string().required(),
+    workplace: Joi.string().required(),
     // .guid({
     //   version: ['uuidv4'],
     // }).required(),
-    workDate: Joi.string(),
-    timeIn: Joi.string(),
-    timeOut: Joi.string(),
-    WorksheetState: Joi.string(),
+    workDate: Joi.string().required(),
+    timeIn: Joi.string().required(),
+    timeOut: Joi.string().required(),
+    token: Joi.string().required(),
+    observations:  Joi.string()
+
+
   });
 
   Joi.assert(payload, schema);
@@ -25,15 +27,13 @@ async function validateSchema(payload) {
 
 
 async function createRegister(req, res, next) {
-  const { userId } = req.claims;
   const noteData = {
     ...req.body,
-    userId,
   };
 
   try {
     await validateSchema(noteData);
-
+    const { userId } = jwt.verify(req.headers.bearer, "Fichamelavida");
  
     //const noteId = uuidV4();
     const now = new Date().toISOString().substring(0, 19).replace('T', ' ');
@@ -43,18 +43,18 @@ async function createRegister(req, res, next) {
     const [result] = await connection.query(sqlCreateNote, {
       //
       //workSheetId: noteId,
-      workSheetId: noteData.workSheetId,
-      project: noteData.project,
-      userId: noteData.userId,
-      workDate: now,
-      timeIn: noteData.timeIn,
-      timeOut: noteData.timeOut,
-      WorksheetState: noteData.WorksheetState,
+      /*
+      */
+    workPlace : noteData.workplace,
+    userId: userId,
+    workDate: now,
+    timeIn: noteData.timeIn,
+    timeOut: noteData.timeOut,
+    WorksheetState: noteData.WorksheetState,
+    observations: noteData.observations
     });
-
     connection.release();
 
-    res.setHeader('Location', `${httpServerDomain}/api/notes/${noteId}`);
     return res.status(201).send();
   } catch (e) {
     console.error(e);

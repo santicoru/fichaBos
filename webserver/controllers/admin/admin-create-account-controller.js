@@ -21,20 +21,6 @@ async function validateSchema(payload) {
   Joi.assert(payload, schema);
 }
 
-async function sendEmailRegistration(userEmail) {
-
-  const msg = {
-    to: userEmail,
-    from: {
-      email: 'usuarioDePrueba@hotmail.com',
-      name: 'Yoyo',
-    },
-    subject: 'Cuenta creada',
-    text: 'Sic semper tyrannis',
-  };
-  const data = await sendgridMail.send(msg);
-  return data;
-}
 
 async function adminCreateAccount(req, res, next) {
   const accountData = { ...req.body };
@@ -47,12 +33,6 @@ async function adminCreateAccount(req, res, next) {
     await validateSchema(accountData);
   } catch (e) {
     console.log(e);
-    return res.status(400).send(e);
-  }
-
-  try {
-    await sendEmailRegistration(userEmail);
-  } catch (e) {
     return res.status(400).send(e);
   }
 
@@ -94,9 +74,6 @@ async function adminCreateAccount(req, res, next) {
       expiresIn: jwtExpiresIn,
     };
 
-    await sendEmailRegistration(userEmail)
-    // await sendEmailRegistration(accountData.email, verificationCode);
-    return res.status(200).send(response);
 
   } catch (e) {
     console.error(e);

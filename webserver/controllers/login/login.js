@@ -23,7 +23,7 @@ async function login(req, res, next) {
   }
 
   try {
-    const sqlQuery = `SELECT userId, userEmail, userPassword
+    const sqlQuery = `SELECT userId, userName, userEmail, userPassword
             FROM userBos
             WHERE userEmail='${authData.email}'`;
     const connection = await mysqlPool.getConnection();
@@ -48,13 +48,14 @@ async function login(req, res, next) {
       //role: admin,
     };
 
-    const jwtExpiresIn = parseInt(process.env.AUTH_ACCESS_TOKEN_TTL);
-    const token = jwt.sign(payloadJwt, process.env.AUTH_JWT_SECRET, {
+    const jwtExpiresIn = 6000000;
+    const token = jwt.sign(payloadJwt, "Fichamelavida", {
       expiresIn: jwtExpiresIn,
     });
 
     const response = {
       accessToken : token,
+      name: userData.userName,
       expiresIn: jwtExpiresIn,
     };
 
